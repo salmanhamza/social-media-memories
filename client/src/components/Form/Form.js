@@ -30,8 +30,18 @@ const Form = ({ currentId, setCurrentId }) => {
     } else {
       dispatch(createPost(postData));
     }
+    clear();
   };
-  const clear = () => {};
+  const clear = () => {
+    setCurrentId(null);
+    setPostData({
+      creator: "",
+      title: "",
+      message: "",
+      tags: "",
+      selectedFile: "",
+    });
+  };
 
   return (
     <Paper className={classes.paper}>
@@ -41,7 +51,9 @@ const Form = ({ currentId, setCurrentId }) => {
         noValidate
         onSubmit={handlerSubmit}
       >
-        <Typography variant="h6">Create a Memory</Typography>
+        <Typography variant="h6">
+          {currentId ? "Edit" : "Create"} a Memory
+        </Typography>
         <TextField
           name="creator"
           label="Creator"

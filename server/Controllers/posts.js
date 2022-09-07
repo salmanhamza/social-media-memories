@@ -29,8 +29,21 @@ export const updatePost = async (request, response) => {
   if (!mongoose.Types.ObjectId.isValid(_id))
     return response.status(404).send("no posts with that id");
 
-  const updatedPost = await PostMessage.findByIdAndUpdate(_id, post, {
-    new: true,
-  });
+  const updatedPost = await PostMessage.findByIdAndUpdate(
+    _id,
+    { ...post, _id },
+    {
+      new: true,
+    }
+  );
   response.json(updatedPost);
+};
+
+export const deletePost = async (request, response) => {
+  try {
+    await PostMessage.deleteOne({ _id: request.params.id });
+    response.status(200).json({ message: "user deleted succesfully" });
+  } catch (error) {
+    response.status(409).json({ message: error.message });
+  }
 };
